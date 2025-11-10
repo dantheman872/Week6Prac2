@@ -13,6 +13,22 @@ class Button {
      */
     constructor(x, y, width, height, label) {
         
+        this.x = width/2
+        this.y = height * 3/8
+        this.width = width /2
+        this.height = height /4
+        this.label = "Click me!"
+    }
+
+    #isMouseOver(x, y, w, h){
+
+        if(this.x < x || this.x > x + w || this.y < y || this.y > y + h && !mouseIsPressed){
+
+            return false
+        } else {
+
+            return true
+        }
     }
 
     /**
