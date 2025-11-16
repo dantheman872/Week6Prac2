@@ -2,6 +2,14 @@
  * A class representing a UI button.
  */
 class Button {
+    /* All instance variables are private. This is a design choice in 
+    keeping with the information hiding principle. You may disagree 
+    with this choice! */
+    #x;
+    #y;
+    #width;
+    #height;
+    #label;
 
     /**
      * Creates a new Button.
@@ -12,23 +20,11 @@ class Button {
      * @param {string} label The text to display on the button.
      */
     constructor(x, y, width, height, label) {
-        
-        this.x = width/2
-        this.y = height * 3/8
-        this.width = width /2
-        this.height = height /4
-        this.label = "Click me!"
-    }
-
-    #isMouseOver(x, y, w, h){
-
-        if(this.x < x || this.x > x + w || this.y < y || this.y > y + h && !mouseIsPressed){
-
-            return false
-        } else {
-
-            return true
-        }
+        this.#x = x;
+        this.#y = y;
+        this.#width = width;
+        this.#height = height;
+        this.#label = label;
     }
 
     /**
@@ -38,7 +34,17 @@ class Button {
      * will be black.
      */
     draw() {
-        
+        textAlign(CENTER, CENTER);
+        textSize(36);
+        let isHovered = this.#mouseIsOver();
+        if (isHovered) {
+            fill(0, 0, 255);
+        } else {
+            fill(0);
+        }
+        rect(this.#x, this.#y, this.#width, this.#height);
+        fill(255);
+        text(this.#label, this.#x, this.#y, this.#width, this.#height);
     }
 
     /**
@@ -46,7 +52,7 @@ class Button {
      * @returns {boolean} True if the mouse is over the button, false otherwise.
      */
     #mouseIsOver() {
-        
+        return mouseX >= this.#x && mouseX <= this.#x + this.#width && mouseY >= this.#y && mouseY <= this.#y + this.#height;
     }
 
     /**
@@ -55,6 +61,27 @@ class Button {
      * @returns {boolean} True if the button is clicked, false otherwise.
      */
     clicked() {
-
+        return this.#mouseIsOver() && mouseIsPressed;
     }
 }
+
+let btn = new Button(100, 100, 200, 100, "Click me!");
+let counter = 0;
+
+function setup() {
+    createCanvas(400, 400);
+}
+
+function draw() {
+    background(255);
+    btn.draw();
+    fill(0);
+    text(`The button has been clicked ${counter} time(s).`, 0, 300, width, 100);
+}
+
+function mousePressed() {
+    if (btn.clicked()) {
+        counter++;
+    }
+}
+
